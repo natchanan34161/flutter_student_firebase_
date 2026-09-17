@@ -10,9 +10,11 @@ class CorporatePage extends StatefulWidget {
 }
 
 class _CorporatePageState extends State<CorporatePage> {
+  //ดึงข้อมูล firebase
   final CollectionReference _corporatesCollection =
       FirebaseFirestore.instance.collection('corporates');
 
+  // Method Add & Update Corporate
   void _showCorporateFormDialog({Corporate? corporate}) {
     final isEditing = corporate != null;
 
@@ -35,6 +37,7 @@ class _CorporatePageState extends State<CorporatePage> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
+                    // TextField กรอกข้อมูล
                     TextField(
                       controller: nameController,
                       decoration: const InputDecoration(labelText: 'ชื่อบริษัท'),
@@ -55,6 +58,7 @@ class _CorporatePageState extends State<CorporatePage> {
                   ],
                 ),
               ),
+              // ปุ่มบันทึก / เพิ่มข้อมูล
               actions: <Widget>[
                 TextButton(
                   onPressed: () => Navigator.pop(context),
@@ -68,6 +72,7 @@ class _CorporatePageState extends State<CorporatePage> {
                     final String contactEmail =
                         contactEmailController.text.trim();
 
+                    // Validate
                     if (name.isEmpty ||
                         industry.isEmpty ||
                         address.isEmpty ||
@@ -88,12 +93,15 @@ class _CorporatePageState extends State<CorporatePage> {
 
                     try {
                       if (isEditing) {
+                        // edit
                         await _corporatesCollection
                             .doc(corporate.id)
                             .update(corporateData);
                       } else {
+                        // add
                         await _corporatesCollection.add(corporateData);
                       }
+                      // Show Information
                       if (context.mounted) {
                         Navigator.pop(context);
                         ScaffoldMessenger.of(context).showSnackBar(

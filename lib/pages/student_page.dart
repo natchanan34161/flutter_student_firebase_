@@ -164,6 +164,37 @@ class _StudentPageState extends State<StudentPage> {
     );
   }
 
+  //Delete Student
+  void _showDeleteConfirmDialog(String docId, String studentName) {
+    showDialog(context: context, builder: (context) {
+      return AlertDialog(
+        title: Text('ยืนยันการลบข้อมูล'),
+        content: Text('ต้องการลบข้อมูล $studentName หรือไม่?', style: TextStyle(color: Colors.red),),
+        actions: <Widget> [
+          // ปุ่มยกเลิก
+          TextButton(onPressed: () => Navigator.pop(context), child: Text('ยกเลิก')),
+          // ปุ่มลบ
+          ElevatedButton(
+            onPressed: () async {
+              try {
+                await _studentsCollection.doc(docId).delete();
+                if (context.mounted) {
+                  Navigator.pop(context);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('ลบข้อมูลเรียบร้อยแล้ว')),
+                  );
+                }
+              } catch (e) {
+                print('Error Delete: $e');
+              }
+            },
+            child: const Text('ลบ'),
+          ),
+        ]
+      );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -239,7 +270,20 @@ class _StudentPageState extends State<StudentPage> {
                         ),
                       ],
                     ),
-                    trailing: Text('ปุ่ม'),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget> [
+                        // edit button
+                        IconButton(
+                          onPressed: () => _showStudentFormDialog(student: student),
+                          icon: Icon(Icons.edit, color: Colors.orange)),
+                        // delete button
+                        IconButton(
+                          onPressed: () => _showDeleteConfirmDialog(student.id, student.name),
+                          icon: Icon(Icons.delete, color: Colors.red)
+                        )
+                      ]
+                    ),
                   ),
                 ),
               );

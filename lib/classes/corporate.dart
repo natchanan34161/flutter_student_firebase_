@@ -15,6 +15,7 @@ class Corporate {
     required this.contactEmail,
   });
 
+  //ดึงข้อมูล แปลง firebase => Object
   factory Corporate.fromFireStore(DocumentSnapshot doc) {
     Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
     return Corporate(
@@ -26,6 +27,7 @@ class Corporate {
     );
   }
 
+  // up ขึ้นไป Save -> แปลง object ให้เป็น firestore
   Map<String, dynamic> toMap() {
     return {
       'name': name,
