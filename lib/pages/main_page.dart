@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_student_firebase/pages/about_page.dart';
-import 'package:flutter_student_firebase/pages/corperate_page.dart';
+import 'package:flutter_student_firebase/pages/corporate_page.dart';
 import 'package:flutter_student_firebase/pages/student_page.dart';
 
 class MainPage extends StatefulWidget {
